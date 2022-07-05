@@ -11,10 +11,10 @@ SELECT DISTINCT artist FROM albums;
 
 -- use SHOW CREATE TABLE to find out the sql
 SHOW CREATE TABLE albums;
+DESCRIBE albums;
 -- the ID is the primary key for the table
-SELECT release_date FROM albums ORDER BY release_date;
+SELECT release_date FROM albums ORDER BY release_date ASC ;
 -- the oldest is 1967 and the latest is 2011
-
 -- find Pink Floyd albums
 SELECT * FROM albums WHERE artist = "Pink Floyd";
 -- The Dark Side of the Moon and The Wall
