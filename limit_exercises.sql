@@ -3,6 +3,24 @@ SHOW DATABASES;
 USE employees;
 SELECT DISTINCT title FROM titles;
 
+-- find first 10 distinct last name
+
+SELECT DISTINCT last_name
+FROM employees
+limit 10;
+/* 'Facello'
+'Simmel'
+'Bamford'
+'Koblick'
+'Maliniak'
+'Preusig'
+'Zielinski'
+'Kalloufi'
+'Peac'
+'Piveteau'
+*/
+
+
 -- find employees who are hired in the 90s and born on Christmas, and sort them by hire date and limit our result to 5
 SELECT first_name,
 last_name,

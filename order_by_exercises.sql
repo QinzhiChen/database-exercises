@@ -8,15 +8,15 @@ SELECT first_name,
 last_name
 FROM employees
 WHERE first_name IN ('Irena', 'Vidya','Maya')
-ORDER BY first_name DESC;
--- The first row is Irena Reutenauer and last row is Vidya Awdeh
+ORDER BY first_name;
+-- The first row is Irena Reutenauer and last row is Vidya Simmen
 
 -- SELECT Irena, Vidya, and Maya, sort them with first name and last name
 SELECT first_name,
 last_name
 FROM employees
 WHERE first_name IN ('Irena', 'Vidya','Maya')
-ORDER BY first_name DESC, last_name DESC;
+ORDER BY first_name, last_name;
 -- The first row is Irena Acton, and last person is Vidya Zweizig
 
 -- find Irena, Vidya, and Maya, sort them with last name and then first name
@@ -33,7 +33,7 @@ last_name,
 first_name
 FROM employees
 WHERE last_name LIKE "E%" AND last_name LIKE "%E"
-ORDER BY emp_no DESC;
+ORDER BY emp_no;
 -- 899 employees returned, the first emoloyee is 10021, Erde Ramzi, and last is 499648 Erde Tadahiro
 
 -- find employees' last name starts and ends with "E", sort by hire date
@@ -52,5 +52,5 @@ hire_date,
 birth_date
 FROM employees
 WHERE hire_date LIKE "199%-%" AND birth_date LIKE "%-12-25"
-ORDER BY birth_date,hire_date;
--- The oldest employee who was hired last is Eugenio Tremaine, and the youngest emoloyee hired first is Vakili Gudjon
+ORDER BY birth_date DESC,hire_date ASC;
+-- The oldest employee who was hired last is Bernini Khun, and the youngest emoloyee hired first is Pettis Douadi
