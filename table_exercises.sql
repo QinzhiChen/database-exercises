@@ -11,6 +11,7 @@ SELECT * FROM employees;
 -- Which table(s) do you think contain a date type column? (birthdate and hire date)
 
 SELECT * FROM departments, employees;
+
 -- What is the relationship between the employees and the departments tables
 -- Each department has employees assigned to it
 
