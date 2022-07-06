@@ -10,7 +10,7 @@ FROM titles;
 -- find a list unique last name that star and end with "E" and group by
 SELECT last_name
 FROM employees
-WHERE last_name LIKE "%E" AND last_name LIKE "E%"
+WHERE last_name LIKE "E%E"
 GROUP BY last_name;
 -- The query identified 5 employees' last name start end end with E
 
@@ -18,7 +18,7 @@ GROUP BY last_name;
 SELECT
 CONCAT(last_name, " ", first_name) AS full_name
 FROM employees
-WHERE last_name LIKE "%E" AND last_name LIKE "E%"
+WHERE last_name LIKE "E%E"
 GROUP BY full_name;
 
 -- a query identify the uniue last name with q but not qu

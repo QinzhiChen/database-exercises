@@ -50,3 +50,21 @@ FROM payment
 WHERE payment_date BETWEEN "2005-05-27 00:00:00" AND "2005-05-27 23:59:59";
 
 -- SELECT ALL COLUMNS FROM CUSTOMER TABLE WHERE LAST NAME BEGGIN WITH S AND FIR NAME END WITH N
+SELECT *
+FROM customer
+WHERE Last_name LIKE "S%" AND first_name LIKE "%N";
+
+-- SELECT ALL COLUMS WHERE CUSTOMER IS INACTIVE OR LAST NAME BEGIN WITH "M"
+SELECT *
+FROM customer
+WHERE last_name LIKE "M%" AND active != 1;
+
+-- select all columns from category table and where primary key is greater than 4 and the name begins with C,S OR T.
+DESCRIBE category;
+SELECT *
+FROM category
+WHERE category_id> 4 AND (name LIKE "C%" OR name LIKE "S%" OR name LIKE "T%");
+
+-- select all columns minus the password
+SELECT password
+FROM staff;
