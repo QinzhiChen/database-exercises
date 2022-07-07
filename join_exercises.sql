@@ -80,3 +80,138 @@ JOIN departments
 USING (dept_no)
 WHERE salaries.to_date = "9999-01-01" AND dept_manager.to_date="9999-01-01"
 ORDER BY dept_name;
+
+-- Find number of current employees for each department
+SELECT dept_no, dept_name, COUNT(emp_no) "num_employees"
+FROM departments
+JOIN dept_emp
+USING(dept_no)
+WHERE to_date = "9999-01-01"
+GROUP BY "num_employees",dept_no
+ORDER BY dept_no;
+
+-- Department that has highest average salary
+SELECT dept_name, AVG(salary) average_salary
+FROM dept_emp
+JOIN departments
+USING(dept_no)
+JOIN salaries
+USING(emp_no)
+WHERE salaries.to_date = "9999-01-01"
+GROUP BY dept_name
+ORDER BY average_salary DESC
+LIMIT 1;
+
+-- Who is the highest paid employee in marketing department
+SELECT first_name,last_name
+FROM employees
+JOIN salaries
+USING(emp_no)
+JOIN dept_emp
+USING(emp_no)
+JOIN departments
+USING(dept_no)
+WHERE dept_name ="Marketing"
+ORDER BY salary DESC
+LIMIT 1;
+
+-- Which current department manager has highest salary
+SELECT first_name, last_name, salary
+FROM employees
+JOIN salaries
+USING (emp_no)
+JOIN dept_manager
+USING (emp_no)
+JOIN departments
+USING (dept_no)
+WHERE salaries.to_date>curdate() AND dept_manager.to_date>curdate()
+ORDER BY salary DESC
+LIMIT 1;
+
+-- historically all average salary in all departments
+SELECT dept_name, 
+ROUND(AVG(salary),0) average_salary
+FROM salaries
+JOIN dept_emp
+USING (emp_no)
+JOIN departments
+USING (dept_no)
+GROUP BY dept_name
+ORDER BY average_salary DESC;
+
+
+-- Bonus
+SELECT CONCAT(first_name," ", last_name) "Employee Name",
+dept_name "Department Name",
+sql1.Department_Manager "Manager Name"
+FROM (
+SELECT dept_name AS DEPARTMENT_NAME,CONCAT(first_name, " ",last_name) Department_Manager
+FROM employees
+JOIN dept_manager
+USING (emp_no)
+JOIN departments
+USING (dept_no)
+WHERE dept_manager.to_date="9999-01-01"
+ORDER BY dept_name
+) AS sql1
+JOIN departments
+ON sql1.DEPARTMENT_NAME = departments.dept_name
+JOIN dept_emp
+ON departments.dept_no=dept_emp.dept_no
+JOIN employees
+ON dept_emp.emp_no = employees.emp_no
+WHERE dept_emp.to_date > curdate()
+ORDER BY dept_name;
+
+-- who is the highest paid employeee in each department
+SELECT CONCAT(first_name," ", last_name) "Employee Name",
+dept_name "Department Name",
+"Manager Name",
+sql3.salary "Highest"
+FROM (
+SELECT CONCAT(first_name," ", last_name) "Employee Name",
+dept_name Department_Name,
+sql1.Department_Manager "Manager Name"
+FROM (
+SELECT dept_name AS DEPARTMENT_NAME,CONCAT(first_name, " ",last_name) Department_Manager
+FROM employees
+JOIN dept_manager
+USING (emp_no)
+JOIN departments
+USING (dept_no)
+WHERE dept_manager.to_date="9999-01-01"
+ORDER BY dept_name
+) AS sql1
+JOIN departments
+ON sql1.DEPARTMENT_NAME = departments.dept_name
+JOIN dept_emp
+ON departments.dept_no=dept_emp.dept_no
+JOIN employees
+ON dept_emp.emp_no = employees.emp_no
+WHERE dept_emp.to_date > curdate()
+ORDER BY dept_name) AS sql2
+JOIN departments
+ON sql2.Department_Name=departments.dept_name
+JOIN dept_emp
+ON departments.dept_no=dept_emp.emp_no
+JOIN employees
+ON dept_emp.emp_no = employees.emp_no
+JOIN (SELECT salary, salaries.emp_no AS sal
+FROM salaries
+JOIN employees
+USING(emp_no)
+JOIN dept_emp
+USING(emp_no)
+JOIN departments
+USING(dept_no)) as sql3
+ON sql3.sal=employees.emp_no
+WHERE dept_emp.to_date > curdate();
+
+SELECT salary, salaries.emp_no AS sal
+FROM salaries
+JOIN employees
+USING(emp_no)
+JOIN dept_emp
+USING(emp_no)
+JOIN departments
+USING(dept_no);
