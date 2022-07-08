@@ -95,3 +95,17 @@ WHERE salary>=((SELECT MAX(salary) FROM salaries WHERE to_date LIKE "9999%")-
 FROM salaries)
 )AND to_date>curdate();
 
+-- WHAT Pencentage
+SELECT(
+(SELECT COUNT(salary)
+FROM salaries
+WHERE salary>=((SELECT MAX(salary) FROM salaries WHERE to_date LIKE "9999%")-
+(SELECT STD(salary)
+FROM salaries)
+)AND to_date>curdate())
+/
+(SELECT COUNT(*) 
+FROM salaries WHERE to_date>now())*100) PERCENTAGE;
+
+
+
