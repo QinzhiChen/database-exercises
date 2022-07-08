@@ -165,9 +165,9 @@ ORDER BY dept_name;
 
 -- who is the highest paid employeee in each department
 SELECT CONCAT(first_name," ", last_name) "Employee Name",
-dept_name "Department Name",
+departments.dept_name "Department Name",
 sql1.Department_Manager "Manager Name",
-Salary Highest
+Highest
 FROM (
 SELECT dept_name AS DEPARTMENT_NAME,CONCAT(first_name, " ",last_name) Department_Manager
 FROM employees
@@ -176,7 +176,7 @@ USING (emp_no)
 JOIN departments
 USING (dept_no)
 WHERE dept_manager.to_date="9999-01-01"
-ORDER BY dept_name
+ORDER BY departments.dept_name
 ) AS sql1
 JOIN departments
 ON sql1.DEPARTMENT_NAME = departments.dept_name
@@ -184,8 +184,31 @@ JOIN dept_emp
 ON departments.dept_no=dept_emp.dept_no
 JOIN employees
 ON dept_emp.emp_no = employees.emp_no
+JOIN (SELECT dept_name, MAX(salary) Highest, 
+CONCAT(first_name," ", last_name) Employee_Name
+FROM employees
 JOIN salaries
-ON dept_emp.emp_no = salaries.emp_no
-WHERE dept_emp.to_date > curdate() AND salaries.to_date > curdate() 
+USING(emp_no)
+JOIN dept_emp
+USING(emp_no)
+JOIN departments
+USING(dept_no)
+GROUP BY dept_name,Employee_Name
+) as sql3
+ON sql3.dept_name=departments.dept_name
+WHERE dept_emp.to_date > curdate()
+AND Highest = sql3.Highest
 ORDER BY HIGHEST
 LIMIT 10;
+
+
+SELECT DISTINCT(dept_name), MAX(salary) Highest, 
+CONCAT(first_name," ", last_name) Employee_Name
+FROM employees
+JOIN salaries
+USING(emp_no)
+JOIN dept_emp
+USING(emp_no)
+JOIN departments
+USING(dept_no)
+GROUP BY Employee_Name;
