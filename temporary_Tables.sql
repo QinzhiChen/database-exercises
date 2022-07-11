@@ -29,10 +29,21 @@ SELECT * FROM employees_with_departments;
 
 -- copy payment from sakila.payment
 CREATE TEMPORARY TABLE payment AS SELECT * FROM sakila.payment;
--- TRANSFORM AMOUNT DOLLAR TO CENT
-describe payment; 
+-- CHANGE AMOUNT FROM DOLLAR TO CENT
+DESCRIBE payment; 
 ALTER TABLE payment ADD COLUMN new_amount DECIMAL(50,0);
 UPDATE payment
 SET new_amount = amount*100;
 SELECT * FROM payment; 
+
+-- compare average department pay to overall pay
+CREATE TEMPORARY TABLE average_pay
+AS SELECT AVG(employees.salaries.salary),
+(employees.salaries.salary - (SELECT AVG(employees.salaries.salary) FROM employees.salaries))
+    /
+    (SELECT stddev(employees.salaries.salary) FROM employees.salaries) AS zscore
+FROM employees.salaries
+WHERE employees.salaries.to_date>curdate()
+GROUP BY ;
+
 
