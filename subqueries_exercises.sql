@@ -107,5 +107,3 @@ FROM salaries)
 (SELECT COUNT(*) 
 FROM salaries WHERE to_date>now())*100) PERCENTAGE;
 
-
-

@@ -37,13 +37,32 @@ SET new_amount = amount*100;
 SELECT * FROM payment; 
 
 -- compare average department pay to overall pay
+
 CREATE TEMPORARY TABLE average_pay
-AS SELECT AVG(employees.salaries.salary),
-(employees.salaries.salary - (SELECT AVG(employees.salaries.salary) FROM employees.salaries))
-    /
-    (SELECT stddev(employees.salaries.salary) FROM employees.salaries) AS zscore
+AS SELECT AVG(employees.salaries.salary) average, employees.departments.dept_name
 FROM employees.salaries
-WHERE employees.salaries.to_date>curdate()
-GROUP BY ;
+JOIN employees.dept_emp
+USING (emp_no)
+JOIN employees.departments
+USING (dept_no)
+WHERE employees.salaries.to_date>curdate() AND employees.dept_emp.to_date>now()
+GROUP BY employees.departments.dept_name;
+select*from average_pay;
 
+ALTER TABLE average_pay
+ADD avg_ float(50,2),
+ADD std float(50,2),
+ADD z_score float(50,0);
+select * from avg_std;
 
+CREATE TEMPORARY TABLE avg_std AS 
+SELECT AVG(employees.salaries.salary) avg_1,STD(employees.salaries.salary) std_1 FROM employees.salaries WHERE employees.salaries.to_date>now();
+
+UPDATE average_pay 
+SET avg_=(SELECT avg_1 FROM avg_std);
+UPDATE average_pay
+SET std= (SELECT std_1 FROM avg_std);
+
+UPDATE average_pay SET z_score= (average-avg_)/std;
+
+SELECT * FROM average_pay;
